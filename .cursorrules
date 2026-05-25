@@ -1,0 +1,102 @@
+# ECC (Everything Claude Code) — Development Rules
+# https://github.com/affaan-m/ecc
+# Applied to: LLM Wiki Builder (React + TypeScript + Python)
+
+## Coding Style
+
+### Immutability (CRITICAL)
+ALWAYS create new objects, NEVER mutate existing ones.
+
+### Core Principles
+- KISS — Prefer simplest solution that works
+- DRY — Extract repeated logic into shared utilities
+- YAGNI — Do not build before needed
+
+### File Organization
+MANY SMALL FILES > FEW LARGE FILES:
+- 200-400 lines typical, 800 max
+- Organize by feature/domain, not by type
+- High cohesion, low coupling
+
+### Naming Conventions
+- Variables/functions: `camelCase`
+- Booleans: `is`, `has`, `should`, `can` prefixes
+- Interfaces/types/components: `PascalCase`
+- Constants: `UPPER_SNAKE_CASE`
+- Custom hooks: `use` prefix
+
+### Code Smells to Avoid
+- Deep nesting → use early returns
+- Magic numbers → use named constants
+- Long functions → split into focused pieces
+
+## TypeScript Specific
+
+### Types and Interfaces
+- Add explicit types to exported functions, shared models, public class methods
+- Let TypeScript infer obvious local variable types
+- Extract repeated inline object shapes into named types/interfaces
+
+### Interfaces vs Type Aliases
+- `interface` for object shapes that may be extended
+- `type` for unions, intersections, tuples, mapped types
+- Prefer string literal unions over `enum`
+
+### Avoid `any`
+- Use `unknown` for external input, then narrow safely
+- Use `satisfies` for validation without widening
+
+## Security
+
+### Mandatory Checks Before Commit
+- [ ] No hardcoded secrets (API keys, passwords, tokens)
+- [ ] All user inputs validated
+- [ ] Error messages don't leak sensitive data
+
+### Secret Management
+- NEVER hardcode secrets
+- ALWAYS use environment variables
+- Validate secrets at startup
+
+## Testing
+
+### Minimum Coverage: 80%
+Test types (ALL required):
+1. Unit tests — individual functions, utilities, components
+2. Integration tests — API endpoints, database operations
+3. E2E tests — critical user flows
+
+### TDD Workflow (MANDATORY)
+1. Write test first (RED) — test should FAIL
+2. Write minimal implementation (GREEN) — test should PASS
+3. Refactor (IMPROVE)
+4. Verify coverage 80%+
+
+### Test Structure (AAA Pattern)
+```typescript
+test('returns empty array when no items match', () => {
+  // Arrange
+  const items = []
+  // Act
+  const result = filterItems(items, 'query')
+  // Assert
+  expect(result).toEqual([])
+})
+```
+
+## Error Handling
+- Handle errors explicitly at every level
+- Provide user-friendly messages in UI code
+- Log detailed context server-side
+- NEVER silently swallow errors
+
+## Input Validation
+- Validate all user input at system boundaries
+- Use schema-based validation where available
+- Fail fast with clear messages
+- NEVER trust external data
+
+## Git Workflow
+- Commit format: `<type>: <description>`
+- Types: feat, fix, refactor, docs, test, chore, perf, ci
+- PR: comprehensive summary + test plan
