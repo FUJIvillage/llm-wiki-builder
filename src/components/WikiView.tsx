@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { BookOpen, Clock, Hash } from 'lucide-react';
 import { getWikiPage } from '../lib/api';
 import { useAppStore } from '../stores/appStore';
+import { extractHeadings } from '../lib/markdown';
 
 function renderMarkdown(content: string): JSX.Element {
   const lines = content.split('\n');
@@ -12,15 +13,19 @@ function renderMarkdown(content: string): JSX.Element {
     const line = lines[i];
 
     if (line.startsWith('# ')) {
+      const text = line.replace('# ', '');
+      const id = text.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-');
       elements.push(
-        <h1 key={key++} className="text-2xl font-bold text-slate-100 mb-4 mt-2">
-          {line.replace('# ', '')}
+        <h1 key={key++} id={id} className="text-2xl font-bold text-slate-100 mb-4 mt-2">
+          {text}
         </h1>
       );
     } else if (line.startsWith('## ')) {
+      const text = line.replace('## ', '');
+      const id = text.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-');
       elements.push(
-        <h2 key={key++} className="text-lg font-semibold text-cyan-400 mt-6 mb-3 pb-2 border-b border-slate-800">
-          {line.replace('## ', '')}
+        <h2 key={key++} id={id} className="text-lg font-semibold text-cyan-400 mt-6 mb-3 pb-2 border-b border-slate-800">
+          {text}
         </h2>
       );
     } else if (line.startsWith('**') && line.endsWith('**')) {
@@ -105,10 +110,32 @@ export function WikiView() {
             <Hash className="w-3 h-3" />
             {wiki.source_queries} answered queries
           </div>
-          {/* Query summaries would go here */}
-          <div className="text-xs text-slate-600 p-2 rounded bg-slate-800/50 border border-slate-800">
-            Query summaries and table of contents coming in next iteration.
-          </div>
+          {/* Table of Contents */}
+          {(() => {
+            const headings = extractHeadings(wiki.content, { maxLevel: 2 });
+            if (headings.length === 0) return null;
+            return (
+              <nav className="space-y-1">
+                {headings.map((h) => (
+                  <a
+                    key={h.id}
+                    href={`#${h.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className={`block text-xs px-2 py-1.5 rounded transition-colors ${
+                      h.level === 1
+                        ? 'text-slate-300 font-medium hover:bg-slate-800'
+                        : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 pl-4'
+                    }`}
+                  >
+                    {h.text}
+                  </a>
+                ))}
+              </nav>
+            );
+          })()}
         </div>
         <div className="p-3 border-t border-slate-800 text-xs text-slate-600 flex items-center gap-1.5">
           <Clock className="w-3 h-3" />
