@@ -1,4 +1,4 @@
-import { Plus, Settings, Database, Inbox, BookOpen } from 'lucide-react';
+import { Plus, Settings, Inbox, BookOpen, Search } from 'lucide-react';
 import { useProjects } from '../hooks/useProjects';
 import { useAppStore } from '../stores/appStore';
 
@@ -69,6 +69,17 @@ export function Sidebar() {
               View
             </div>
             <div className="px-2 space-y-1">
+              <button
+                onClick={() => setView('search')}
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition text-sm ${
+                  view === 'search'
+                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                    : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+                }`}
+              >
+                <Search className="w-4 h-4" />
+                Search
+              </button>
               <button
                 onClick={() => setView('inbox')}
                 className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition text-sm ${

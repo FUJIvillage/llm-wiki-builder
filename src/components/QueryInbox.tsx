@@ -1,24 +1,12 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Database, Sparkles, Inbox, ChevronRight } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
 import { useQueries, useGenerateQueries } from '../hooks/useQueries';
-import { getProject } from '../lib/api';
 import { QueryCard } from './QueryCard';
-import type { Project } from '../types';
 
 export function QueryInbox() {
   const { selectedProjectId } = useAppStore();
   const [selectedQueryId, setSelectedQueryId] = useState<string | null>(null);
-
-  const { data: project } = useQuery<Project | null>({
-    queryKey: ['project', selectedProjectId],
-    queryFn: async () => {
-      if (!selectedProjectId) return null;
-      return getProject(selectedProjectId);
-    },
-    enabled: !!selectedProjectId,
-  });
 
   const { data: queries, isLoading } = useQueries({
     project_id: selectedProjectId || '',
@@ -128,9 +116,7 @@ export function QueryInbox() {
                 {queries && queries.length > 0 ? 'Select a query' : 'Ready to curate knowledge'}
               </h3>
               <p className="text-sm text-slate-500 max-w-md">
-                {project
-                  ? `OpenClaw raw: ${project.raw_path}`
-                  : 'Select a project to begin'}
+                Select a project to begin
               </p>
             </div>
           </div>

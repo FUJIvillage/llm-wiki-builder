@@ -11,7 +11,6 @@ export function QueryCard({ query }: QueryCardProps) {
   const submitAnswer = useSubmitAnswer();
   const skipQuery = useSkipQuery();
   const [selected, setSelected] = useState<string[]>([]);
-  const [freeText, setFreeText] = useState('');
 
   const handleToggle = (choiceId: string) => {
     if (query.query_type === 'multi_select') {
@@ -29,7 +28,7 @@ export function QueryCard({ query }: QueryCardProps) {
     submitAnswer.mutate({
       query_id: query.id,
       selected_choice_ids: selected,
-      free_text: freeText || null,
+      free_text: null,
     });
   };
 

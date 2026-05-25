@@ -3,8 +3,8 @@ import { create } from 'zustand';
 interface AppState {
   selectedProjectId: string | null;
   setSelectedProjectId: (id: string | null) => void;
-  view: 'inbox' | 'wiki' | 'settings';
-  setView: (view: 'inbox' | 'wiki' | 'settings') => void;
+  view: 'inbox' | 'wiki' | 'settings' | 'search';
+  setView: (view: 'inbox' | 'wiki' | 'settings' | 'search') => void;
   showProjectForm: boolean;
   setShowProjectForm: (show: boolean) => void;
 }

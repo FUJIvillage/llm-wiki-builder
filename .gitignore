@@ -1,35 +1,23 @@
-# Dependencies
 node_modules/
-package-lock.json
-
-# Build outputs
 dist/
-build/
+*.local
 
-# Rust / Tauri
-src-tauri/target/
-src-tauri/gen/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
 
-# Generated data (may contain personal file paths)
-data/
+# Database
+*.db
+*.sqlite
 
-# Logs
-*.log
-npm-debug.log*
-
-# Environment variables
-.env
-.env.*
-
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Vite
-.vite/
+# Logs
+*.log
+data/
+package-lock.json

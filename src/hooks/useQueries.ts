@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { listQueries, submitAnswer, skipQuery, generateQueries } from '../lib/api';
-import type { Query, Answer, SubmitAnswerPayload, SkipQueryPayload, ListQueriesPayload } from '../types';
+import type { ListQueriesPayload } from '../types';
 
 const QUERIES_KEY = 'queries';
 
